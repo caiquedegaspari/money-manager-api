@@ -4,15 +4,16 @@
     "module": "commonjs",                                /* Specify what module code is generated. */
     "esModuleInterop": true,                             /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */
     "forceConsistentCasingInFileNames": true,            /* Ensure that casing is correct in imports. */
-    "rootDir": "src",
+    "rootDirs": ["src", "tests"],
     "outDir": "dist",
     "strict": true,                                      /* Enable all strict type-checking options. */
     "baseUrl": "src",
     "sourceMap": true,
     "paths": {
-      "@/*": [
-        "*"
-      ]
+      "@/tests/*": ["../tests/*"],
+      "@/*": ["*"]
     }
-  }
+  },
+   "include": ["src", "tests"]
+
 }

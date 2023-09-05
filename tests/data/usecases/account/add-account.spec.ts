@@ -3,6 +3,7 @@ import { AddAccountRepository } from '@/data/protocols/db/account/add-account-re
 import { CheckAccountByEmailRepository } from '@/data/protocols/db/account/check-account-by-email-repository'
 import { DbAddAccount } from '@/data/usecases/account/db-add-account'
 import { AddAccount } from '@/domain/usecases/account/add-account'
+import { mockAddAccountParams } from '../../mocks'
 
 interface SutTypes {
   sut: AddAccount
@@ -50,12 +51,6 @@ const makeSut = (): SutTypes => {
     checkAccountByEmailRepositoryStub
   }
 }
-
-const mockAddAccountParams = (): AddAccount.Params => ({
-  email: 'anyemail@mail.com',
-  name: 'any name',
-  password: 'any_password'
-})
 
 describe('Test Add Account usecase', () => {
   it('Should call Hasher with correct value', async () => {
