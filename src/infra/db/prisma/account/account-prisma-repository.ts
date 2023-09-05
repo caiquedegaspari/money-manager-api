@@ -1,18 +1,15 @@
 import { AddAccountRepository, CheckAccountByEmailRepository } from '@/data/protocols/db/account'
-import { PrismaClient } from '@prisma/client'
-
+import prisma from '../client'
 export class AccountPrismaRepository implements AddAccountRepository, CheckAccountByEmailRepository {
-  private readonly prisma = new PrismaClient()
-
   async add (params: AddAccountRepository.Params): Promise<boolean> {
-    const res = await this.prisma.user.create({
+    const res = await prisma.user.create({
       data: { ...params }
     })
     return res !== null
   };
 
   async checkByEmail (email: string): Promise<boolean> {
-    const user = await this.prisma.user.findFirst({
+    const user = await prisma.user.findFirst({
       where: {
         email
       }

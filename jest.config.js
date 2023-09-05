@@ -10,6 +10,7 @@ module.exports = {
     '!<rootDir>/src/**/index.ts',
     '!**/test/**'
   ],
+  setupFilesAfterEnv: ['<rootDir>/tests/singleton.ts'],
   coverageDirectory: 'coverage',
   coverageProvider: 'v8',
   transform: {
