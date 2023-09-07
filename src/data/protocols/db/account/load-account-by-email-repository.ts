@@ -5,6 +5,7 @@ export interface LoadAccountByEmailRepository {
 export namespace LoadAccountByEmailRepository {
   export type Params = string
   export type Result = {
+    id: number
     name: string
     password: string
   } | null
