@@ -1,6 +1,6 @@
 import { Authentication } from '@/domain/usecases/account/authentication'
 import { AuthenticationController } from '@/presentation/controllers/account/authentication-controller'
-import { unauthorized } from '@/presentation/helpers'
+import { ok, unauthorized } from '@/presentation/helpers'
 import { mockAuthenticationParams } from '@/tests/data/mocks'
 
 interface SutTypes {
@@ -41,5 +41,10 @@ describe('Authentication Controller', () => {
     const params = mockAuthenticationParams()
     const res = await sut.handle(params)
     expect(res).toEqual(unauthorized())
+  })
+  it('Should return 200 om success', async () => {
+    const { sut } = makeSut()
+    const res = await sut.handle(mockAuthenticationParams())
+    expect(res).toEqual(ok({ accessToken: 'any_token', name: 'any name' }))
   })
 })
