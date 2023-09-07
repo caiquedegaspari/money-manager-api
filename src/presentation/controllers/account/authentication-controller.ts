@@ -1,5 +1,5 @@
 import { Authentication } from '@/domain/usecases/account/authentication'
-import { unauthorized } from '@/presentation/helpers'
+import { ok, unauthorized } from '@/presentation/helpers'
 import { Controller, HttpResponse } from '@/presentation/protocols'
 
 export class AuthenticationController implements Controller {
@@ -8,10 +8,7 @@ export class AuthenticationController implements Controller {
   async handle (request: AuthenticationController.Params): Promise<HttpResponse> {
     const response = await this.authentication.auth(request)
     if (!response) return unauthorized()
-    return await Promise.resolve({
-      body: '',
-      statusCode: 200
-    })
+    return ok(response)
   }
 }
 
