@@ -92,4 +92,10 @@ describe('Authentication usecase', () => {
     await sut.auth(params)
     expect(encryptSpy).toHaveBeenCalledWith(String(1))
   })
+  it('Should return accessToken and name o success', async () => {
+    const { sut } = makeSut()
+    const res = await sut.auth(mockAuthenticationParams())
+    expect(res?.accessToken).toBeDefined()
+    expect(res?.name).toBe('any_name')
+  })
 })
