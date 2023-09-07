@@ -1,6 +1,7 @@
 import { Authentication } from '@/domain/usecases/account/authentication'
 import { AuthenticationController } from '@/presentation/controllers/account/authentication-controller'
-import { ok, unauthorized } from '@/presentation/helpers'
+import { ServerError } from '@/presentation/errors/server-error'
+import { ok, serverError, unauthorized } from '@/presentation/helpers'
 import { mockAuthenticationParams } from '@/tests/data/mocks'
 
 interface SutTypes {
@@ -46,5 +47,13 @@ describe('Authentication Controller', () => {
     const { sut } = makeSut()
     const res = await sut.handle(mockAuthenticationParams())
     expect(res).toEqual(ok({ accessToken: 'any_token', name: 'any name' }))
+  })
+  it('Should return 500 if Authentication throws', async () => {
+    const { sut, authenticationStub } = makeSut()
+    jest.spyOn(authenticationStub, 'auth').mockImplementationOnce(() => {
+      throw new Error()
+    })
+    const httpResponse = await sut.handle(mockAuthenticationParams())
+    expect(httpResponse).toEqual(serverError(new ServerError()))
   })
 })
