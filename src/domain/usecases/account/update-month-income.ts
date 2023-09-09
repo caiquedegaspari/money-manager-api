@@ -1,4 +1,4 @@
-interface UpdateMonthIncome {
+export interface UpdateMonthIncome {
   updateMonthIncome: (params: UpdateMonthIncome.Params) => Promise<UpdateMonthIncome.Result>
 }
 
