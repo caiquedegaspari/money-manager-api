@@ -1,8 +1,8 @@
-export interface UpdateMonthIncome {
-  updateMonthIncome: (params: UpdateMonthIncome.Params) => Promise<UpdateMonthIncome.Result>
+export interface UpdateMonthlyIncome {
+  updateMonthlyIncome: (params: UpdateMonthlyIncome.Params) => Promise<UpdateMonthlyIncome.Result>
 }
 
-export namespace UpdateMonthIncome {
+export namespace UpdateMonthlyIncome {
   export type Params = {
     userId: number
     value: number
