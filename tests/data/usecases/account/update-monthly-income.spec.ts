@@ -62,4 +62,10 @@ describe('DbUpdateMonthIncome', () => {
     await sut.updateMonthlyIncome({ userId: 1, value: 1000 })
     expect(updateSpy).toHaveBeenCalledWith({ userId: 1, value: 1000 })
   })
+
+  it('Should return monthly income on success', async () => {
+    const { sut } = makeSut()
+    const res = await sut.updateMonthlyIncome({ userId: 1, value: 1000 })
+    expect(res).toBe(2000)
+  })
 })
