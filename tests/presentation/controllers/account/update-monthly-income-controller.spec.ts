@@ -2,7 +2,7 @@ import { UpdateMonthlyIncome } from '@/domain/usecases/account/update-month-inco
 import { UpdateMonthlyIncomeController } from '@/presentation/controllers/account/update-monthly-income'
 import { InvalidParamError } from '@/presentation/errors/invalid-param-error'
 import { UserNotFoundError } from '@/presentation/errors/user-not-found-error'
-import { badRequest, forbidden } from '@/presentation/helpers'
+import { badRequest, forbidden, ok } from '@/presentation/helpers'
 
 interface SutTypes {
   UpdateMonthlyIncomeStub: UpdateMonthlyIncome
@@ -58,5 +58,15 @@ describe('UpdateMonthlyIncome Controller', () => {
     }
     const response = await sut.handle(request)
     expect(response).toEqual(badRequest(new InvalidParamError('monthly income must be greater than 100')))
+  })
+
+  it('Should return 2000 on success', async () => {
+    const { sut } = makeSut()
+    const request: UpdateMonthlyIncome.Params = {
+      userId: 1,
+      value: 2000
+    }
+    const response = await sut.handle(request)
+    expect(response).toEqual(ok(2000))
   })
 })
