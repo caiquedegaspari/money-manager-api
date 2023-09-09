@@ -6,7 +6,7 @@
   "scripts": {
     "start:dev": "npx nodemon src/main/server.ts",
     "build": "rimraf ./dist && tsc",
-    "start": "npm run build && node dist/main/server.js",
+    "start": "npm run build && node dist/src/main/server.js",
     "test": "jest --passWithNoTests --silent --noStackTrace --runInBand",
     "test:verbose": "jest --passWithNoTests --runInBand",
     "test:unit": "npm test -- --watch -c jest-unit-config.js ",

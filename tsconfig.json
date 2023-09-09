@@ -6,6 +6,7 @@
     "rootDirs": ["src", "tests"],
     "outDir": "dist",
     "strict": true,                                      /* Enable all strict type-checking options. */
+    "moduleResolution": "node",
     "baseUrl": "src",
     "sourceMap": true,
     "paths": {
@@ -13,6 +14,5 @@
       "@/*": ["*"]
     }
   },
-   "include": ["src", "tests"]
-
+   "include": ["src", "tests"],
 }

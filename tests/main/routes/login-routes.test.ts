@@ -24,7 +24,8 @@ describe('Login routes', () => {
         id: 1,
         name: 'any_name',
         email: 'any_email@mail.com',
-        password
+        password,
+        monthlyIncome: 200
       })
       await request(app)
         .post('/api/login').send({
