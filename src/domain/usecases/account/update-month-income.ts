@@ -7,5 +7,5 @@ export namespace UpdateMonthIncome {
     userId: number
     value: number
   }
-  export type Result = number
+  export type Result = number | null
 }
