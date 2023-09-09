@@ -11,7 +11,7 @@ export class DbUpdateMonthlyIncome implements UpdateMonthlyIncome {
   async updateMonthlyIncome (params: UpdateMonthlyIncome.Params): Promise<UpdateMonthlyIncome.Result> {
     const user = await this.loadAccountByIdRepository.loadById(params.userId)
     if (!user) return null
-    await this.updateMonthlyIncomeRepository.updateMonthlyIncome({ userId: params.userId, value: params.value })
-    return await Promise.resolve(1)
+    const monthlyIncome = await this.updateMonthlyIncomeRepository.updateMonthlyIncome({ userId: params.userId, value: params.value })
+    return monthlyIncome
   }
 }
