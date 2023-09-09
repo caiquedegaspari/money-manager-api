@@ -14,7 +14,7 @@ export class UpdateMonthlyIncomeController implements Controller {
       if (request.value <= 100) return badRequest(new InvalidParamError('monthly income must be greater than 100'))
       const monthlyIncome = await this.updateMonthlyIncome.updateMonthlyIncome(request)
       if (!monthlyIncome) return forbidden(new UserNotFoundError())
-      return ok(20)
+      return ok(monthlyIncome)
     } catch (error) {
       return serverError(error as Error)
     }
