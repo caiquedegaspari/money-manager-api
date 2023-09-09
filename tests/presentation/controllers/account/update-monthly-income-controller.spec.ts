@@ -1,5 +1,7 @@
 import { UpdateMonthlyIncome } from '@/domain/usecases/account/update-month-income'
 import { UpdateMonthlyIncomeController } from '@/presentation/controllers/account/update-monthly-income'
+import { UserNotFoundError } from '@/presentation/errors/user-not-found-error'
+import { forbidden } from '@/presentation/helpers'
 
 interface SutTypes {
   UpdateMonthlyIncomeStub: UpdateMonthlyIncome
@@ -34,5 +36,16 @@ describe('UpdateMonthlyIncome Controller', () => {
     }
     await sut.handle(request)
     expect(updateSpy).toHaveBeenCalledWith(request)
+  })
+
+  it('Should return 403 if UpdateMonthlyIncome returns null', async () => {
+    const { UpdateMonthlyIncomeStub, sut } = makeSut()
+    jest.spyOn(UpdateMonthlyIncomeStub, 'updateMonthlyIncome').mockReturnValueOnce(Promise.resolve(null))
+    const request: UpdateMonthlyIncome.Params = {
+      userId: 1,
+      value: 2000
+    }
+    const response = await sut.handle(request)
+    expect(response).toEqual(forbidden(new UserNotFoundError()))
   })
 })
