@@ -1,6 +1,12 @@
-import { AddAccountRepository, CheckAccountByEmailRepository, LoadAccountByEmailRepository } from '@/data/protocols/db/account'
+import { AddAccountRepository, CheckAccountByEmailRepository, LoadAccountByEmailRepository, LoadAccountByIdRepository } from '@/data/protocols/db/account'
 import prisma from '../client'
-export class AccountPrismaRepository implements AddAccountRepository, CheckAccountByEmailRepository, LoadAccountByEmailRepository {
+import { UpdateMonthlyIncomeRepository } from '@/data/protocols/db/account/update-monthly-income-repository'
+export class AccountPrismaRepository implements
+AddAccountRepository,
+CheckAccountByEmailRepository,
+LoadAccountByEmailRepository,
+LoadAccountByIdRepository,
+UpdateMonthlyIncomeRepository {
   async add (params: AddAccountRepository.Params): Promise<boolean> {
     const res = await prisma.user.create({
       data: { ...params }
@@ -24,5 +30,26 @@ export class AccountPrismaRepository implements AddAccountRepository, CheckAccou
       }
     })
     return user ?? null
+  }
+
+  async loadById (id: number): Promise<LoadAccountByIdRepository.Result> {
+    const user = await prisma.user.findFirst({
+      where: {
+        id
+      }
+    })
+    return user ?? null
+  }
+
+  async updateMonthlyIncome (params: UpdateMonthlyIncomeRepository.Params): Promise<number> {
+    await prisma.user.update({
+      where: {
+        id: params.userId
+      },
+      data: {
+        monthlyIncome: params.value
+      }
+    })
+    return params.value
   }
 }

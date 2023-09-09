@@ -19,7 +19,7 @@ describe('AccountPrismaRepository', () => {
     it('Should return true on add success', async () => {
       const { sut } = makeSut()
       const res = await sut.add(mockAddAccountParams())
-      prismaMock.user.create.mockResolvedValueOnce({ id: 1, ...mockAddAccountParams() })
+      prismaMock.user.create.mockResolvedValueOnce({ id: 1, monthlyIncome: 0, ...mockAddAccountParams() })
       expect(res).toBe(true)
     })
   })
