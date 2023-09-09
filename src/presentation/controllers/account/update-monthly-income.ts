@@ -1,6 +1,7 @@
 import { UpdateMonthlyIncome } from '@/domain/usecases/account/update-month-income'
 import { MissingParamError } from '@/presentation/errors/missing-param-error'
-import { badRequest, ok, serverError } from '@/presentation/helpers'
+import { UserNotFoundError } from '@/presentation/errors/user-not-found-error'
+import { badRequest, forbidden, ok, serverError } from '@/presentation/helpers'
 import { Controller, HttpResponse } from '@/presentation/protocols'
 
 export class UpdateMonthlyIncomeController implements Controller {
@@ -9,7 +10,8 @@ export class UpdateMonthlyIncomeController implements Controller {
     try {
       if (!request.userId) return badRequest(new MissingParamError('userId'))
       if (!request.value) return badRequest(new MissingParamError('value'))
-      await this.updateMonthlyIncome.updateMonthlyIncome(request)
+      const monthlyIncome = await this.updateMonthlyIncome.updateMonthlyIncome(request)
+      if (!monthlyIncome) return forbidden(new UserNotFoundError())
       return ok(20)
     } catch (error) {
       return serverError(error as Error)
