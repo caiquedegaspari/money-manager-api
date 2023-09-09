@@ -36,4 +36,10 @@ describe('DbUpdateMonthIncome', () => {
     await sut.updateMonthIncome({ userId: 1, value: 200 })
     expect(spyLoad).toHaveBeenCalledWith(1)
   })
+  it('Should return null if LoadAccountByIdRepository returns null', async () => {
+    const { sut, loadAccountByIdRepositoryStub } = makeSut()
+    jest.spyOn(loadAccountByIdRepositoryStub, 'loadById').mockReturnValueOnce(Promise.resolve(null))
+    const result = await sut.updateMonthIncome({ userId: 1, value: 200 })
+    expect(result).toBeNull()
+  })
 })
