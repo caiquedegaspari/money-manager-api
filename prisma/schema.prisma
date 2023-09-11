@@ -12,11 +12,12 @@ datasource db {
 }
 
 model User {
-  id            Int    @id @default(autoincrement())
-  email         String @unique
+  id            Int       @id @default(autoincrement())
+  email         String    @unique
   password      String
   name          String
-  monthlyIncome Float? @default(0)
+  monthlyIncome Float?    @default(0)
+  Expense       Expense[]
 }
 
 model Expense {
@@ -24,5 +25,7 @@ model Expense {
   name       String
   value      Int
   date       DateTime
+  userId     Int
+  user       User     @relation(fields: [userId], references: [id])
   categoryId Int?
 }

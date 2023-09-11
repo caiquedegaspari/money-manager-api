@@ -7,6 +7,7 @@ export namespace AddExpense {
     name: string
     value: number
     date: Date
+    userId: number
     installmentsAmount?: number
     categoryId?: number
   }

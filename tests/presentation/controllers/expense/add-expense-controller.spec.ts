@@ -49,7 +49,7 @@ describe('AddExpenseController', () => {
   })
   it('Should return 400 if value is less than 1', async () => {
     const { sut } = makeSut()
-    const result = await sut.handle({ date: new Date(), name: 'invalid_expense', value: -1 })
+    const result = await sut.handle({ date: new Date(), name: 'invalid_expense', value: -1, userId: 1 })
     expect(result).toEqual(badRequest(new InvalidParamError('value must be greater than 0')))
   })
   it('Should return 200 on success', async () => {

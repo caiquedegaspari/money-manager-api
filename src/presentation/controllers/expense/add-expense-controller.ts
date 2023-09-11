@@ -26,6 +26,7 @@ export namespace AddExpenseController {
     name: string
     value: number
     date: Date
+    userId: number
     categoryId?: number
   }
 }
