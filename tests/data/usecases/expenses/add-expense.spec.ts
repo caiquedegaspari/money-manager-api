@@ -68,7 +68,8 @@ describe('AddExpense usecase', () => {
     const { sut, addManyExpensesRepositoryStub } = makeSut()
     const addSpy = jest.spyOn(addManyExpensesRepositoryStub, 'addMany')
     await sut.add({ ...mockAddExpenseParams(), installmentsAmount: 2 })
-    expect(addSpy).toHaveBeenCalledWith([mockAddExpenseParams(), mockAddExpenseParams()])
+    const mockOneMonthLaterDate = new Date().setMonth(new Date().getMonth() + 1)
+    expect(addSpy).toHaveBeenCalledWith([mockAddExpenseParams(), { name: 'name', value: 123, date: new Date(mockOneMonthLaterDate), userId: 1 }])
   })
 
   it('Should return an Expense result on AddExpenseRepository success', async () => {

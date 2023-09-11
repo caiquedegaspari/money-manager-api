@@ -13,7 +13,10 @@ export class DbAddExpenses implements AddExpense {
     if (installmentsAmount && installmentsAmount > 1) {
       const expenses: AddManyExpensesRepository.Params = []
       for (let i = 0; i < installmentsAmount; i++) {
-        expenses.push(data)
+        const currentDate = new Date()
+        const currentMonth = currentDate.getMonth()
+        const parsedDate = new Date().setMonth(currentMonth + i)
+        expenses.push({ date: new Date(parsedDate), name: data.name, userId: data.userId, value: data.value, categoryId: data.categoryId })
       }
       const expense = await this.addManyExpensesRepository.addMany(expenses)
       return expense
