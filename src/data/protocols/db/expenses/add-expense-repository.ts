@@ -1,8 +1,8 @@
-export interface AddExpense {
-  add: (params: AddExpense.Params) => Promise<AddExpense.Result>
+export interface AddExpenseRepository {
+  add: (params: AddExpenseRepository.Params) => Promise<AddExpenseRepository.Result>
 }
 
-export namespace AddExpense {
+export namespace AddExpenseRepository {
   export type Params = {
     name: string
     value: number
