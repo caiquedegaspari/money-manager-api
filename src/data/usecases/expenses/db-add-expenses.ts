@@ -14,7 +14,8 @@ export class DbAddExpenses implements AddExpense {
       for (let i = 0; i < params.installmentsAmount; i++) {
         expenses.push({ name: params.name, value: params.value, categoryId: params.categoryId })
       }
-      await this.addManyExpensesRepository.addMany(expenses)
+      const expense = await this.addManyExpensesRepository.addMany(expenses)
+      return expense
     }
     const expense = await this.addExpenseRepository.add(params)
     return expense
