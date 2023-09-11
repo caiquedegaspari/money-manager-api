@@ -1,5 +1,7 @@
 import { AddExpense } from '@/domain/usecases/expenses/add-expense'
 import { AddExpenseController } from '@/presentation/controllers/expense/add-expense-controller'
+import { InvalidParamError } from '@/presentation/errors/invalid-param-error'
+import { badRequest } from '@/presentation/helpers'
 import { mockAddExpenseParams } from '@/tests/data/mocks/expenses'
 import MockDate from 'mockdate'
 
@@ -45,5 +47,10 @@ describe('AddExpenseController', () => {
     const addSpy = jest.spyOn(addExpenseStub, 'add')
     await sut.handle(mockAddExpenseParams())
     expect(addSpy).toHaveBeenCalledWith(mockAddExpenseParams())
+  })
+  it('Should return 400 if value is less than 1', async () => {
+    const { sut } = makeSut()
+    const result = await sut.handle({ date: new Date(), name: 'invalid_expense', value: -1 })
+    expect(result).toEqual(badRequest(new InvalidParamError('value must be greater than 0')))
   })
 })
