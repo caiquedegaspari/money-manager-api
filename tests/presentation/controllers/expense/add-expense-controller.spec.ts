@@ -1,7 +1,7 @@
 import { AddExpense } from '@/domain/usecases/expenses/add-expense'
 import { AddExpenseController } from '@/presentation/controllers/expense/add-expense-controller'
 import { InvalidParamError } from '@/presentation/errors/invalid-param-error'
-import { badRequest, ok } from '@/presentation/helpers'
+import { badRequest, ok, serverError } from '@/presentation/helpers'
 import { mockAddExpenseParams } from '@/tests/data/mocks/expenses'
 import MockDate from 'mockdate'
 
@@ -60,5 +60,11 @@ describe('AddExpenseController', () => {
       value: 200,
       date: new Date()
     }))
+  })
+  it('Should return 500 if AddExpense throws', async () => {
+    const { sut, addExpenseStub } = makeSut()
+    jest.spyOn(addExpenseStub, 'add').mockReturnValueOnce(Promise.reject(new Error()))
+    const error = await sut.handle(mockAddExpenseParams())
+    expect(error).toEqual(serverError(new Error()))
   })
 })
