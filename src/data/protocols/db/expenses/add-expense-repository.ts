@@ -2,13 +2,13 @@ export interface AddExpenseRepository {
   add: (params: AddExpenseRepository.Params) => Promise<AddExpenseRepository.Result>
 }
 
+export type AddExpenseRepositoryParam = {
+  name: string
+  value: number
+  categoryId?: number
+}
 export namespace AddExpenseRepository {
-  export type Params = {
-    name: string
-    value: number
-    installmentsAmount?: number
-    categoryId?: number
-  }
+  export type Params = AddExpenseRepositoryParam
 
   export type Result = {
     name: string
