@@ -16,10 +16,7 @@ export class DbAddExpenses implements AddExpense {
       }
       await this.addManyExpensesRepository.addMany(expenses)
     }
-    await this.addExpenseRepository.add(params)
-    return await Promise.resolve({
-      name: 'name',
-      value: 123
-    })
+    const expense = await this.addExpenseRepository.add(params)
+    return expense
   };
 }
