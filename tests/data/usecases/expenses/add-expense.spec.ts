@@ -14,8 +14,7 @@ const makeAddExpenseRepository = (): AddExpenseRepository => {
     async add (params: AddExpenseRepository.Params): Promise<AddExpenseRepository.Result> {
       return {
         name: 'expense',
-        value: 123,
-        categoryId: 1
+        value: 123
       }
     }
   }
@@ -27,8 +26,7 @@ const makeAddManyExpensesRepository = (): AddManyExpensesRepository => {
     async addMany (params: AddManyExpensesRepository.Params): Promise<AddManyExpensesRepository.Result> {
       return {
         name: 'expense',
-        value: 123,
-        categoryId: 1
+        value: 123
       }
     }
   }
@@ -60,5 +58,12 @@ describe('AddExpense usecase', () => {
     const addSpy = jest.spyOn(addManyExpensesRepositoryStub, 'addMany')
     await sut.add({ name: 'name', value: 123, installmentsAmount: 2 })
     expect(addSpy).toHaveBeenCalledWith([{ name: 'name', value: 123 }, { name: 'name', value: 123 }])
+  })
+
+  it('Should return an Expense result on AddExpenseRepository success', async () => {
+    const { sut } = makeSut()
+    const result = await sut.add({ name: 'expense', value: 123, installmentsAmount: 2 })
+    expect(result.name).toBe('expense')
+    expect(result.value).toBe(123)
   })
 })
