@@ -1,10 +1,17 @@
 import { AddExpense } from '@/domain/usecases/expenses/add-expense'
-import { ok } from '@/presentation/helpers'
+import { InvalidParamError } from '@/presentation/errors/invalid-param-error'
+import { MissingParamError } from '@/presentation/errors/missing-param-error'
+import { badRequest, ok } from '@/presentation/helpers'
 import { Controller, HttpResponse } from '@/presentation/protocols'
 
 export class AddExpenseController implements Controller {
   constructor (private readonly addExpense: AddExpense) {}
   async handle (request: AddExpenseController.Params): Promise<HttpResponse> {
+    if (!request.name) return badRequest(new MissingParamError('name'))
+    if (!request.value) return badRequest(new MissingParamError('value'))
+    if (!request.date) return badRequest(new MissingParamError('date'))
+    if (request.value < 1) return badRequest(new InvalidParamError('value must be greater than 0'))
+
     await this.addExpense.add(request)
     return await Promise.resolve(ok(200))
   }
