@@ -1,7 +1,7 @@
 import { AddExpense } from '@/domain/usecases/expenses/add-expense'
 import { AddExpenseController } from '@/presentation/controllers/expense/add-expense-controller'
 import { InvalidParamError } from '@/presentation/errors/invalid-param-error'
-import { badRequest } from '@/presentation/helpers'
+import { badRequest, ok } from '@/presentation/helpers'
 import { mockAddExpenseParams } from '@/tests/data/mocks/expenses'
 import MockDate from 'mockdate'
 
@@ -17,7 +17,6 @@ const mockAddExpense = (): AddExpense => {
         name: 'expense',
         value: 200,
         date: new Date()
-
       })
     }
   }
@@ -52,5 +51,14 @@ describe('AddExpenseController', () => {
     const { sut } = makeSut()
     const result = await sut.handle({ date: new Date(), name: 'invalid_expense', value: -1 })
     expect(result).toEqual(badRequest(new InvalidParamError('value must be greater than 0')))
+  })
+  it('Should return 200 on success', async () => {
+    const { sut } = makeSut()
+    const result = await sut.handle(mockAddExpenseParams())
+    expect(result).toEqual(ok({
+      name: 'expense',
+      value: 200,
+      date: new Date()
+    }))
   })
 })
