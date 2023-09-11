@@ -12,8 +12,8 @@ export class AddExpenseController implements Controller {
     if (!request.date) return badRequest(new MissingParamError('date'))
     if (request.value < 1) return badRequest(new InvalidParamError('value must be greater than 0'))
 
-    await this.addExpense.add(request)
-    return await Promise.resolve(ok(200))
+    const expense = await this.addExpense.add(request)
+    return ok(expense)
   }
 }
 
