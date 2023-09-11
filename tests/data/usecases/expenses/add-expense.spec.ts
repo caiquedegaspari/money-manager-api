@@ -62,6 +62,13 @@ describe('AddExpense usecase', () => {
 
   it('Should return an Expense result on AddExpenseRepository success', async () => {
     const { sut } = makeSut()
+    const result = await sut.add({ name: 'expense', value: 123 })
+    expect(result.name).toBe('expense')
+    expect(result.value).toBe(123)
+  })
+
+  it('Should return an Expense result on AddManyExpensesRepository success', async () => {
+    const { sut } = makeSut()
     const result = await sut.add({ name: 'expense', value: 123, installmentsAmount: 2 })
     expect(result.name).toBe('expense')
     expect(result.value).toBe(123)
