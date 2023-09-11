@@ -15,5 +15,6 @@ export namespace AddExpense {
     name: string
     value: number
     categoryId?: number
+    date: Date
   }
 }

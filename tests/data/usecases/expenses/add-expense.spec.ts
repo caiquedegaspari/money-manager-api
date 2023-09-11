@@ -3,14 +3,13 @@ import { AddExpense } from '@/domain/usecases/expenses/add-expense'
 import { DbAddExpenses } from '@/data/usecases/expenses/db-add-expenses'
 import { AddManyExpensesRepository } from '@/data/protocols/db/expenses/add-many-expenses-repository'
 import MockDate from 'mockdate'
+import { mockAddExpenseParams } from '../../mocks/expenses'
 
 type SutTypes = {
   sut: AddExpense
   addExpenseRepositoryStub: AddExpenseRepository
   addManyExpensesRepositoryStub: AddManyExpensesRepository
 }
-
-const mockAddExpenseParams = (): AddExpense.Params => ({ name: 'name', value: 123, date: new Date() })
 
 const makeAddExpenseRepository = (): AddExpenseRepository => {
   class AddExpenseRepositoryStub implements AddExpenseRepository {
@@ -84,5 +83,6 @@ describe('AddExpense usecase', () => {
     const result = await sut.add({ ...mockAddExpenseParams(), installmentsAmount: 2 })
     expect(result.name).toBe('expense')
     expect(result.value).toBe(123)
+    expect(result.date).toEqual(new Date())
   })
 })
