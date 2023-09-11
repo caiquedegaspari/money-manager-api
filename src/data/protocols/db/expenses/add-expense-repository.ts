@@ -5,6 +5,7 @@ export interface AddExpenseRepository {
 export type AddExpenseRepositoryParam = {
   name: string
   value: number
+  date: Date
   categoryId?: number
 }
 export namespace AddExpenseRepository {
@@ -13,6 +14,7 @@ export namespace AddExpenseRepository {
   export type Result = {
     name: string
     value: number
+    date: Date
     categoryId?: number
   }
 }

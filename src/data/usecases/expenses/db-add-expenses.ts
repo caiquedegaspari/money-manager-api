@@ -9,15 +9,16 @@ export class DbAddExpenses implements AddExpense {
   ) {}
 
   async add (params: AddExpense.Params): Promise<AddExpense.Result> {
-    if (params.installmentsAmount && params.installmentsAmount > 1) {
+    const { installmentsAmount, ...data } = params
+    if (installmentsAmount && installmentsAmount > 1) {
       const expenses: AddManyExpensesRepository.Params = []
-      for (let i = 0; i < params.installmentsAmount; i++) {
-        expenses.push({ name: params.name, value: params.value, categoryId: params.categoryId })
+      for (let i = 0; i < installmentsAmount; i++) {
+        expenses.push(data)
       }
       const expense = await this.addManyExpensesRepository.addMany(expenses)
       return expense
     }
-    const expense = await this.addExpenseRepository.add(params)
+    const expense = await this.addExpenseRepository.add(data)
     return expense
   };
 }
