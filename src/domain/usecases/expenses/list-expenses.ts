@@ -5,7 +5,7 @@ export interface ListExpenses {
 type Expense = {
   name: string
   value: number
-  category: string
+  category?: string
 }
 
 type CategoryPercentage = {
