@@ -8,7 +8,7 @@ type Expense = {
   category?: string
 }
 
-type CategoryPercentage = {
+export type CategoryPercentage = {
   category: string
   percent: number
   totalSpent: number
