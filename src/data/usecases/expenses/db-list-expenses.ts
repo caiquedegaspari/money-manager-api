@@ -5,7 +5,12 @@ export class DbListExpenses implements ListExpenses {
   constructor (private readonly listExpensesRepository: ListExpensesRepository) {}
   async list (params: ListExpenses.Params): Promise<ListExpenses.Result> {
     const expenses = await this.listExpensesRepository.list(params)
-
+    if (!expenses.length) {
+      return {
+        expenses: [{ name: 'Sem Gastos', value: 0 }],
+        percentages: [{ category: 'Sem Categoria', percent: 0, totalSpent: 0 }]
+      }
+    }
     const totalExpensesValue = expenses.reduce((acc, currentValue) => {
       return acc + currentValue.value
     }, 0)
