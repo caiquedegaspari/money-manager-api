@@ -63,6 +63,25 @@ describe('ListExpenses Usecase', () => {
     expect(result.percentages[1].percent).toBe(67)
     expect(result.percentages[1].totalSpent).toBe(400)
   })
+  it('Should return valid percentages on success', async () => {
+    const { sut, listExpensesRepositoryStub } = makeSut()
+    jest.spyOn(listExpensesRepositoryStub, 'list').mockReturnValueOnce(Promise.resolve([{
+      name: 'expense 1',
+      value: 300
+    }, {
+      name: 'expense 2',
+      value: 300
+    },
+    {
+      name: 'expense 3',
+      value: 300
+    }
+    ]))
+    const result = await sut.list(mockListExpensesParams())
+    expect(result.percentages[0].category).toBe('Sem Categoria')
+    expect(result.percentages[0].percent).toBe(100)
+    expect(result.percentages.length).toBe(1)
+  })
   it('Should return percentage 0 and expenses 0 if ListExpensesRepository returns []', async () => {
     const { sut, listExpensesRepositoryStub } = makeSut()
     jest.spyOn(listExpensesRepositoryStub, 'list').mockReturnValueOnce(Promise.resolve([]))
