@@ -1,6 +1,6 @@
 import { ListExpenses } from '@/domain/usecases/expenses/list-expenses'
 import { ListExpensesController } from '@/presentation/controllers/expense/list-expenses-controller'
-import { ok } from '@/presentation/helpers'
+import { ok, serverError } from '@/presentation/helpers'
 
 type SutTypes = {
   listExpensesStub: ListExpenses
@@ -51,5 +51,12 @@ describe('ListExpensesController', () => {
 
     const result = await sut.handle(mockRequest())
     expect(result).toEqual(ok(mockListExpensesReturn()))
+  })
+  it('Should return 500 if ListExpenses throws', async () => {
+    const { listExpensesStub, sut } = makeSut()
+    jest.spyOn(listExpensesStub, 'list').mockReturnValueOnce(Promise.reject(new Error()))
+
+    const response = await sut.handle(mockRequest())
+    expect(response).toEqual(serverError(new Error()))
   })
 })
