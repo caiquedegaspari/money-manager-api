@@ -16,17 +16,15 @@ export class DbListExpenses implements ListExpenses {
     }, 0)
 
     const percentages = expenses.reduce<CategoryPercentage[]>((acc, currentValue) => {
-      const existentCategory = acc.find((item) => item.category === currentValue.category)
+      const categoryName = currentValue.category ?? 'Sem Categoria'
+      const existentCategory = acc.find((item) => item.category === categoryName)
+
       if (existentCategory) {
         const index = acc.indexOf(existentCategory)
         acc[index].totalSpent += currentValue.value
         return acc
       }
-      if (!currentValue.category) {
-        acc.push({ category: 'Sem Categoria', totalSpent: currentValue.value, percent: 0 })
-        return acc
-      }
-      acc.push({ category: currentValue.category, totalSpent: currentValue.value, percent: 0 })
+      acc.push({ category: categoryName, totalSpent: currentValue.value, percent: 0 })
       return acc
     }, [])
     percentages.forEach((percentage) => {
