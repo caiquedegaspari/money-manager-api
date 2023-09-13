@@ -7,11 +7,12 @@ export class ListExpensesController implements Controller {
   constructor (private readonly listExpenses: ListExpenses) {}
   async handle (request: ListExpensesController.Params): Promise<HttpResponse> {
     try {
-      if (!request.endDate) badRequest(new MissingParamError('endDate'))
-      if (!request.startDate) badRequest(new MissingParamError('startDate'))
-      if (!request.userId) badRequest(new MissingParamError('userId'))
+      const { userId, ...data } = request
+      if (!data.endDate) return badRequest(new MissingParamError('endDate'))
+      if (!data.startDate) return badRequest(new MissingParamError('startDate'))
+      if (!userId) return badRequest(new MissingParamError('userId'))
 
-      const expenses = await this.listExpenses.list(request)
+      const expenses = await this.listExpenses.list({ ...data, userId: +userId })
       return ok(expenses)
     } catch (err) {
       return serverError(err as Error)
