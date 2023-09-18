@@ -31,6 +31,8 @@ const mockUpdateExpenseRepository = (): UpdateExpenseRepository => {
   return new UpdateExpenseRepositoryStub()
 }
 
+const mockRequest = (): UpdateExpense.Params => ({ expenseId: 1, value: 200 })
+
 const makeSut = (): SutTypes => {
   const loadExpenseByIdRepositoryStub = mockLoadExpenseByIdRepository()
   const updateExpenseRepositoryStub = mockUpdateExpenseRepository()
@@ -47,31 +49,36 @@ describe('Update Expense usecase', () => {
   it('Should call LoadExpeseByIdRepository with correct values', async () => {
     const { loadExpenseByIdRepositoryStub, sut } = makeSut()
     const loadSpy = jest.spyOn(loadExpenseByIdRepositoryStub, 'loadById')
-    await sut.update({ expenseId: 1, value: 200 })
+    await sut.update(mockRequest())
     expect(loadSpy).toHaveBeenCalledWith(1)
   })
   it('Should return null if LoadExpeseByIdRepository returns null', async () => {
     const { loadExpenseByIdRepositoryStub, sut } = makeSut()
     jest.spyOn(loadExpenseByIdRepositoryStub, 'loadById').mockReturnValueOnce(Promise.resolve(null))
-    const res = await sut.update({ expenseId: 1, value: 200 })
+    const res = await sut.update(mockRequest())
     expect(res).toBeNull()
   })
   it('Should call UpdateExpeseRepository with correct values', async () => {
     const { updateExpenseRepositoryStub, sut } = makeSut()
     const updateSpy = jest.spyOn(updateExpenseRepositoryStub, 'update')
-    await sut.update({ expenseId: 1, value: 200 })
+    await sut.update(mockRequest())
     expect(updateSpy).toHaveBeenCalledWith({ id: 1, value: 200 })
   })
   it('Should throw if LoadExpenseById Throws', async () => {
     const { loadExpenseByIdRepositoryStub, sut } = makeSut()
     jest.spyOn(loadExpenseByIdRepositoryStub, 'loadById').mockReturnValueOnce(Promise.reject(new Error()))
-    const promise = sut.update({ expenseId: 1, value: 200 })
+    const promise = sut.update(mockRequest())
     await expect(promise).rejects.toThrowError()
   })
   it('Should throw if UpdateExpensed Throws', async () => {
     const { updateExpenseRepositoryStub, sut } = makeSut()
     jest.spyOn(updateExpenseRepositoryStub, 'update').mockReturnValueOnce(Promise.reject(new Error()))
-    const promise = sut.update({ expenseId: 1, value: 200 })
+    const promise = sut.update(mockRequest())
     await expect(promise).rejects.toThrowError()
+  })
+  it('Should return true on success', async () => {
+    const { sut } = makeSut()
+    const res = await sut.update(mockRequest())
+    expect(res).toBe(true)
   })
 })
