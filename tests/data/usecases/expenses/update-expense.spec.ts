@@ -62,4 +62,16 @@ describe('Update Expense usecase', () => {
     await sut.update({ expenseId: 1, value: 200 })
     expect(updateSpy).toHaveBeenCalledWith({ id: 1, value: 200 })
   })
+  it('Should throw if LoadExpenseById Throws', async () => {
+    const { loadExpenseByIdRepositoryStub, sut } = makeSut()
+    jest.spyOn(loadExpenseByIdRepositoryStub, 'loadById').mockReturnValueOnce(Promise.reject(new Error()))
+    const promise = sut.update({ expenseId: 1, value: 200 })
+    await expect(promise).rejects.toThrowError()
+  })
+  it('Should throw if UpdateExpensed Throws', async () => {
+    const { updateExpenseRepositoryStub, sut } = makeSut()
+    jest.spyOn(updateExpenseRepositoryStub, 'update').mockReturnValueOnce(Promise.reject(new Error()))
+    const promise = sut.update({ expenseId: 1, value: 200 })
+    await expect(promise).rejects.toThrowError()
+  })
 })
