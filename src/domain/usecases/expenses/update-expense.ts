@@ -7,5 +7,5 @@ export namespace UpdateExpense {
     expenseId: number
     value: number
   }
-  export type Result = Promise<void>
+  export type Result = Promise<boolean | null>
 }

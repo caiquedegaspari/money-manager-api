@@ -5,6 +5,6 @@ export class DbUpdateExpense implements UpdateExpense {
   constructor (private readonly loadExpenseByIdRepository: LoadExpenseByIdRepository) {}
   async update (params: UpdateExpense.Params): UpdateExpense.Result {
     await this.loadExpenseByIdRepository.loadById(params.expenseId)
-    return await Promise.resolve()
+    return await Promise.resolve(true)
   };
 }
