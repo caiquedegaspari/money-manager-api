@@ -12,6 +12,6 @@ export class DbUpdateExpense implements UpdateExpense {
     const expenseToUpdate = await this.loadExpenseByIdRepository.loadById(params.expenseId)
     if (!expenseToUpdate) return null
     await this.updateExpenseRepository.update({ id: params.expenseId, value: params.value })
-    return await Promise.resolve(true)
+    return true
   };
 }
