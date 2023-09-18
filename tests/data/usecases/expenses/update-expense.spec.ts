@@ -1,13 +1,15 @@
 import { LoadExpenseByIdRepository } from '@/data/protocols/db/expenses/load-expense-by-id-repository'
 import { UpdateExpense } from '@/domain/usecases/expenses/update-expense'
 import { DbUpdateExpense } from '@/data/usecases/expenses/db-update-expense'
+import { UpdateExpenseRepository } from '@/data/protocols/db/expenses/update-expense-repository'
 
 export type SutTypes = {
   sut: UpdateExpense
   loadExpenseByIdRepositoryStub: LoadExpenseByIdRepository
+  updateExpenseRepositoryStub: UpdateExpenseRepository
 }
 
-const makeLoadExpenseByIdRepository = (): LoadExpenseByIdRepository => {
+const mockLoadExpenseByIdRepository = (): LoadExpenseByIdRepository => {
   class LoadExpenseByIdRepositoryStub implements LoadExpenseByIdRepository {
     async loadById (params: LoadExpenseByIdRepository.Params): Promise<LoadExpenseByIdRepository.Result> {
       return await Promise.resolve({
@@ -20,18 +22,29 @@ const makeLoadExpenseByIdRepository = (): LoadExpenseByIdRepository => {
   return new LoadExpenseByIdRepositoryStub()
 }
 
+const mockUpdateExpenseRepository = (): UpdateExpenseRepository => {
+  class UpdateExpenseRepositoryStub implements UpdateExpenseRepository {
+    async update (params: UpdateExpenseRepository.Params): Promise<UpdateExpenseRepository.Result> {
+      return await Promise.resolve()
+    }
+  }
+  return new UpdateExpenseRepositoryStub()
+}
+
 const makeSut = (): SutTypes => {
-  const loadExpenseByIdRepositoryStub = makeLoadExpenseByIdRepository()
-  const sut = new DbUpdateExpense(loadExpenseByIdRepositoryStub)
+  const loadExpenseByIdRepositoryStub = mockLoadExpenseByIdRepository()
+  const updateExpenseRepositoryStub = mockUpdateExpenseRepository()
+  const sut = new DbUpdateExpense(loadExpenseByIdRepositoryStub, updateExpenseRepositoryStub)
 
   return {
     sut,
-    loadExpenseByIdRepositoryStub
+    loadExpenseByIdRepositoryStub,
+    updateExpenseRepositoryStub
   }
 }
 
 describe('Update Expense usecase', () => {
-  it('Should LoadExpeseByIdRepository with correct values', async () => {
+  it('Should call LoadExpeseByIdRepository with correct values', async () => {
     const { loadExpenseByIdRepositoryStub, sut } = makeSut()
     const loadSpy = jest.spyOn(loadExpenseByIdRepositoryStub, 'loadById')
     await sut.update({ expenseId: 1, value: 200 })
@@ -42,5 +55,11 @@ describe('Update Expense usecase', () => {
     jest.spyOn(loadExpenseByIdRepositoryStub, 'loadById').mockReturnValueOnce(Promise.resolve(null))
     const res = await sut.update({ expenseId: 1, value: 200 })
     expect(res).toBeNull()
+  })
+  it('Should call UpdateExpeseRepository with correct values', async () => {
+    const { updateExpenseRepositoryStub, sut } = makeSut()
+    const updateSpy = jest.spyOn(updateExpenseRepositoryStub, 'update')
+    await sut.update({ expenseId: 1, value: 200 })
+    expect(updateSpy).toHaveBeenCalledWith({ id: 1, value: 200 })
   })
 })
