@@ -37,4 +37,10 @@ describe('Update Expense usecase', () => {
     await sut.update({ expenseId: 1, value: 200 })
     expect(loadSpy).toHaveBeenCalledWith(1)
   })
+  it('Should return null if LoadExpeseByIdRepository returns null', async () => {
+    const { loadExpenseByIdRepositoryStub, sut } = makeSut()
+    jest.spyOn(loadExpenseByIdRepositoryStub, 'loadById').mockReturnValueOnce(Promise.resolve(null))
+    const res = await sut.update({ expenseId: 1, value: 200 })
+    expect(res).toBeNull()
+  })
 })
