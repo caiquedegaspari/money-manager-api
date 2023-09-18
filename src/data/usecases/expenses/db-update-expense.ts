@@ -4,7 +4,8 @@ import { UpdateExpense } from '@/domain/usecases/expenses/update-expense'
 export class DbUpdateExpense implements UpdateExpense {
   constructor (private readonly loadExpenseByIdRepository: LoadExpenseByIdRepository) {}
   async update (params: UpdateExpense.Params): UpdateExpense.Result {
-    await this.loadExpenseByIdRepository.loadById(params.expenseId)
+    const expenseToUpdate = await this.loadExpenseByIdRepository.loadById(params.expenseId)
+    if (!expenseToUpdate) return null
     return await Promise.resolve(true)
   };
 }

@@ -8,5 +8,5 @@ export namespace LoadExpenseByIdRepository {
     id: number
     name: string
     value: number
-  }
+  } | null
 }
