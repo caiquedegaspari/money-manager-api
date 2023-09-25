@@ -1,7 +1,7 @@
 import { UpdateExpense } from '@/domain/usecases/expenses/update-expense'
 import { UpdateExpenseController } from '@/presentation/controllers/expense/update-expense-controller'
 import { InvalidParamError } from '@/presentation/errors/invalid-param-error'
-import { badRequest, serverError } from '@/presentation/helpers'
+import { badRequest, ok, serverError } from '@/presentation/helpers'
 
 type SutTypes = {
   updateExpenseStub: UpdateExpense
@@ -44,5 +44,11 @@ describe('Update Expense Controller', () => {
 
     const response = await sut.handle(mockRequest())
     expect(response).toEqual(serverError(new Error()))
+  })
+  it('Should return 200 on success', async () => {
+    const { sut } = makeSut()
+
+    const response = await sut.handle(mockRequest())
+    expect(response).toEqual(ok(true))
   })
 })
