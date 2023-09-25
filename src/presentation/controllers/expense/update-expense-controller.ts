@@ -8,8 +8,8 @@ export class UpdateExpenseController implements Controller {
   async handle (request: UpdateExpenseController.Params): Promise<HttpResponse> {
     try {
       if (request.value < 0) return badRequest(new InvalidParamError('value must be greater than 0'))
-      await this.updateExpense.update(request)
-      return ok(true)
+      const result = await this.updateExpense.update(request)
+      return ok(result)
     } catch (err) {
       return serverError(err as Error)
     }
