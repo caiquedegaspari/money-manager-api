@@ -3,7 +3,7 @@ import { UpdateExpense } from '@/domain/usecases/expenses/update-expense'
 import { DbUpdateExpense } from '@/data/usecases/expenses/db-update-expense'
 import { UpdateExpenseRepository } from '@/data/protocols/db/expenses/update-expense-repository'
 
-export type SutTypes = {
+type SutTypes = {
   sut: UpdateExpense
   loadExpenseByIdRepositoryStub: LoadExpenseByIdRepository
   updateExpenseRepositoryStub: UpdateExpenseRepository
