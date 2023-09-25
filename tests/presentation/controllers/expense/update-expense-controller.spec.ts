@@ -1,6 +1,7 @@
 import { UpdateExpense } from '@/domain/usecases/expenses/update-expense'
 import { UpdateExpenseController } from '@/presentation/controllers/expense/update-expense-controller'
-import { serverError } from '@/presentation/helpers'
+import { InvalidParamError } from '@/presentation/errors/invalid-param-error'
+import { badRequest, serverError } from '@/presentation/helpers'
 
 type SutTypes = {
   updateExpenseStub: UpdateExpense
@@ -31,6 +32,11 @@ describe('Update Expense Controller', () => {
     const params = mockRequest()
     await sut.handle(params)
     expect(updateSpy).toHaveBeenCalledWith(params)
+  })
+  it('Should return 400 if value is less than 1', async () => {
+    const { sut } = makeSut()
+    const result = await sut.handle({ value: -1, expenseId: 1 })
+    expect(result).toEqual(badRequest(new InvalidParamError('value must be greater than 0')))
   })
   it('Should return 500 if UpdateExpenses throws', async () => {
     const { updateExpenseStub, sut } = makeSut()
