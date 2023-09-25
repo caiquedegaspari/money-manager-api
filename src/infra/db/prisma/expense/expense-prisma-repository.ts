@@ -2,8 +2,9 @@ import { AddExpenseRepository, ListExpensesRepository } from '@/data/protocols/d
 import prisma from '../client'
 import { AddManyExpensesRepository } from '@/data/protocols/db/expenses/add-many-expenses-repository'
 import { UpdateExpenseRepository } from '@/data/protocols/db/expenses/update-expense-repository'
+import { LoadExpenseByIdRepository } from '@/data/protocols/db/expenses/load-expense-by-id-repository'
 
-export class ExpensePrismaRepository implements AddExpenseRepository, AddManyExpensesRepository, ListExpensesRepository, UpdateExpenseRepository {
+export class ExpensePrismaRepository implements AddExpenseRepository, AddManyExpensesRepository, ListExpensesRepository, UpdateExpenseRepository, LoadExpenseByIdRepository {
   async add (params: AddExpenseRepository.Params): Promise<AddExpenseRepository.Result> {
     const createdExpense = await prisma.expense.create({ data: params })
     return {
@@ -50,5 +51,14 @@ export class ExpensePrismaRepository implements AddExpenseRepository, AddManyExp
         value: params.value
       }
     })
+  }
+
+  async loadById (params: number): Promise<LoadExpenseByIdRepository.Result> {
+    const expense = await prisma.expense.findFirst({
+      where: {
+        id: params
+      }
+    })
+    return expense
   }
 }
