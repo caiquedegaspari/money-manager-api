@@ -8,7 +8,8 @@ export class DbListExpenses implements ListExpenses {
     if (!expenses.length) {
       return {
         expenses: [{ name: 'Sem Gastos', value: 0 }],
-        percentages: [{ category: 'Sem Categoria', percent: 0, totalSpent: 0 }]
+        percentages: [{ category: 'Sem Categoria', percent: 0, totalSpent: 0 }],
+        total: 0
       }
     }
     const totalExpensesValue = expenses.reduce((acc, currentValue) => {
@@ -33,7 +34,8 @@ export class DbListExpenses implements ListExpenses {
 
     return {
       expenses,
-      percentages
+      percentages,
+      total: totalExpensesValue
     }
   };
 }

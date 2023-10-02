@@ -23,5 +23,6 @@ export namespace ListExpenses {
   export type Result = {
     expenses: Expense[]
     percentages: CategoryPercentage[]
+    total: number
   }
 }
