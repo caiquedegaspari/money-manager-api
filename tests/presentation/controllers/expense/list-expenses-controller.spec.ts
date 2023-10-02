@@ -71,4 +71,11 @@ describe('ListExpensesController', () => {
     const response = await sut.handle(mockRequest())
     expect(response).toEqual(serverError(new Error()))
   })
+  it('Should return 500 if LoadAccountById throws', async () => {
+    const { loadAccountByIdStub, sut } = makeSut()
+    jest.spyOn(loadAccountByIdStub, 'loadById').mockReturnValueOnce(Promise.reject(new Error()))
+
+    const response = await sut.handle(mockRequest())
+    expect(response).toEqual(serverError(new Error()))
+  })
 })
