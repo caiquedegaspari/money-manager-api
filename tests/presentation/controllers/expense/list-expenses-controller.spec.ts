@@ -1,8 +1,9 @@
 import { LoadAccountById } from '@/domain/usecases/account/load-account-by-id'
 import { ListExpenses } from '@/domain/usecases/expenses/list-expenses'
 import { ListExpensesController } from '@/presentation/controllers/expense/list-expenses-controller'
-import { ok, serverError } from '@/presentation/helpers'
+import { badRequest, ok, serverError } from '@/presentation/helpers'
 import { mockLoadAccountById } from '../mocks/account'
+import { UserNotFoundError } from '@/presentation/errors/user-not-found-error'
 
 type SutTypes = {
   listExpensesStub: ListExpenses
@@ -58,6 +59,19 @@ describe('ListExpensesController', () => {
     await sut.handle(params)
     expect(loadSpy).toHaveBeenCalledWith(1)
   })
+  it('Should return 400 if LoadAccountById returns null', async () => {
+    const { loadAccountByIdStub, sut } = makeSut()
+    jest.spyOn(loadAccountByIdStub, 'loadById').mockReturnValueOnce(Promise.resolve(null))
+    const params = mockRequest()
+    const res = await sut.handle(params)
+    expect(res).toEqual(badRequest(new UserNotFoundError()))
+  })
+  // it('Should return correct rate on LoadAccountById success', async () => {
+  //  const { sut } = makeSut()
+  //
+  //  const result = await sut.handle(mockRequest())
+  //  expect(result.body.rate).toEqual(0)
+  // })
   it('Should return 200 on ListExpenses success', async () => {
     const { sut } = makeSut()
 
