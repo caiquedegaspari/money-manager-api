@@ -4,6 +4,7 @@ import { AccessDeniedError } from '@/presentation/errors/access-denied-error'
 import { forbidden, ok, unauthorized } from '@/presentation/helpers/http/http-helper'
 import { DecodedToken, Decrypter } from '@/data/protocols/criptography/decrypter'
 import { UserNotFoundError } from '@/presentation/errors/user-not-found-error'
+import { mockLoadAccountById } from '../controllers/mocks/account'
 
 const mockFakeRequest = (): AuthMiddleware.Request => ({
   accessToken: 'bearer any_token'
@@ -13,17 +14,6 @@ type SutTypes = {
   sut: AuthMiddleware
   loadAccountByIdStub: LoadAccountById
   decrypterStub: Decrypter
-}
-
-const mockLoadAccountById = (): LoadAccountById => {
-  class LoadAccountByIdStub implements LoadAccountById {
-    async loadById (params: number): Promise<LoadAccountById.Result> {
-      return await Promise.resolve({
-        id: 1
-      })
-    }
-  }
-  return new LoadAccountByIdStub()
 }
 
 const mockDecrypter = (): Decrypter => {
