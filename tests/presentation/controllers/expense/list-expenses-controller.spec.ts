@@ -1,9 +1,12 @@
+import { LoadAccountById } from '@/domain/usecases/account/load-account-by-id'
 import { ListExpenses } from '@/domain/usecases/expenses/list-expenses'
 import { ListExpensesController } from '@/presentation/controllers/expense/list-expenses-controller'
 import { ok, serverError } from '@/presentation/helpers'
+import { mockLoadAccountById } from '../mocks/account'
 
 type SutTypes = {
   listExpensesStub: ListExpenses
+  loadAccountByIdStub: LoadAccountById
   sut: ListExpensesController
 }
 
@@ -31,10 +34,12 @@ const mockListExpenses = (): ListExpenses => {
 
 const makeSut = (): SutTypes => {
   const listExpensesStub = mockListExpenses()
-  const sut = new ListExpensesController(listExpensesStub)
+  const loadAccountByIdStub = mockLoadAccountById()
+  const sut = new ListExpensesController(listExpensesStub, loadAccountByIdStub)
   return {
     sut,
-    listExpensesStub
+    listExpensesStub,
+    loadAccountByIdStub
   }
 }
 
@@ -45,6 +50,13 @@ describe('ListExpensesController', () => {
     const params = mockRequest()
     await sut.handle(params)
     expect(listSpy).toHaveBeenCalledWith(params)
+  })
+  it('Should call LoadAccountById with correct values', async () => {
+    const { loadAccountByIdStub, sut } = makeSut()
+    const loadSpy = jest.spyOn(loadAccountByIdStub, 'loadById')
+    const params = mockRequest()
+    await sut.handle(params)
+    expect(loadSpy).toHaveBeenCalledWith(1)
   })
   it('Should return 200 on ListExpenses success', async () => {
     const { sut } = makeSut()
