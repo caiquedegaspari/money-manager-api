@@ -7,5 +7,6 @@ export namespace LoadAccountByIdRepository {
   export type Result = {
     id: number
     email: string
+    monthlyIncome: number
   } | null
 }

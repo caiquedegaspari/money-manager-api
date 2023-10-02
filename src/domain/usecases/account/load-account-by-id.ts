@@ -7,5 +7,6 @@ export namespace LoadAccountById {
 
   export type Result = {
     id: number
+    monthlyIncome: number
   } | null
 }

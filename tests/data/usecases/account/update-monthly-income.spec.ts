@@ -14,7 +14,8 @@ const mockLoadAccountByIdRepository = (): LoadAccountByIdRepository => {
     async loadById (id: LoadAccountByIdRepository.Params): Promise<LoadAccountByIdRepository.Result> {
       return await Promise.resolve({
         id: 1,
-        email: 'any_mail@mail.com'
+        email: 'any_mail@mail.com',
+        monthlyIncome: 200
       })
     }
   }
