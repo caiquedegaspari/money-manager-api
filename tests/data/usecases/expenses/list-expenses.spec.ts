@@ -63,6 +63,11 @@ describe('ListExpenses Usecase', () => {
     expect(result.percentages[1].percent).toBe(67)
     expect(result.percentages[1].totalSpent).toBe(400)
   })
+  it('Should return valid total on success', async () => {
+    const { sut } = makeSut()
+    const result = await sut.list(mockListExpensesParams())
+    expect(result.total).toBe(600)
+  })
   it('Should return valid percentages on success', async () => {
     const { sut, listExpensesRepositoryStub } = makeSut()
     jest.spyOn(listExpensesRepositoryStub, 'list').mockReturnValueOnce(Promise.resolve([{
