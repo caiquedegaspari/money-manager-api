@@ -13,12 +13,12 @@ export class ListExpensesController implements Controller {
       if (!data.endDate) return badRequest(new MissingParamError('endDate'))
       if (!data.startDate) return badRequest(new MissingParamError('startDate'))
       if (!userId) return badRequest(new MissingParamError('userId'))
-      const user = await this.loadAccountById.loadById(userId)
+      const user = await this.loadAccountById.loadById(+userId)
       const expenses = await this.listExpenses.list({ ...data, userId: +userId })
       if (!user) return badRequest(new UserNotFoundError())
       const rateValue = user?.monthlyIncome - expenses.total
-
-      return ok({ rate: rateValue, ...expenses })
+      const expentPercentageValue = (expenses.total / user.monthlyIncome) * 100
+      return ok({ rate: rateValue, expentPercentage: +expentPercentageValue.toFixed(0), ...expenses })
     } catch (err) {
       return serverError(err as Error)
     }
