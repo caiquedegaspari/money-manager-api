@@ -16,7 +16,7 @@ model User {
   email         String    @unique
   password      String
   name          String
-  monthlyIncome Float?    @default(0)
+  monthlyIncome Float     @default(0)
   Expense       Expense[]
 }
 
