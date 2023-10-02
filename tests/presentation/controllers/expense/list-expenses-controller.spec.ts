@@ -77,7 +77,13 @@ describe('ListExpensesController', () => {
     const { sut } = makeSut()
 
     const result = await sut.handle(mockRequest())
-    expect(result).toEqual(ok({ rate: 0, ...mockListExpensesReturn() }))
+    expect(result).toEqual(ok({ rate: 0, expentPercentage: 100, ...mockListExpensesReturn() }))
+  })
+  it('Should return correct expent rate percentage on success', async () => {
+    const { sut } = makeSut()
+
+    const result = await sut.handle(mockRequest())
+    expect(result.body.expentPercentage).toBe(100)
   })
   it('Should return 500 if ListExpenses throws', async () => {
     const { listExpensesStub, sut } = makeSut()
