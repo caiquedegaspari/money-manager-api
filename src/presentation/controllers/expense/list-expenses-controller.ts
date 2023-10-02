@@ -1,6 +1,7 @@
 import { LoadAccountById } from '@/domain/usecases/account/load-account-by-id'
 import { ListExpenses } from '@/domain/usecases/expenses/list-expenses'
 import { MissingParamError } from '@/presentation/errors/missing-param-error'
+import { UserNotFoundError } from '@/presentation/errors/user-not-found-error'
 import { badRequest, ok, serverError } from '@/presentation/helpers'
 import { Controller, HttpResponse } from '@/presentation/protocols'
 
@@ -12,8 +13,11 @@ export class ListExpensesController implements Controller {
       if (!data.endDate) return badRequest(new MissingParamError('endDate'))
       if (!data.startDate) return badRequest(new MissingParamError('startDate'))
       if (!userId) return badRequest(new MissingParamError('userId'))
-      await this.loadAccountById.loadById(userId)
+      const user = await this.loadAccountById.loadById(userId)
       const expenses = await this.listExpenses.list({ ...data, userId: +userId })
+      if (!user) return badRequest(new UserNotFoundError())
+      // const rate = user?.monthlyIncome - expenses.percentages[0].totalSpent
+
       return ok(expenses)
     } catch (err) {
       return serverError(err as Error)
