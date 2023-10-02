@@ -21,7 +21,8 @@ const mockRequest = (): ListExpensesController.Params => ({
 
 const mockListExpensesReturn = (): ListExpenses.Result => ({
   expenses: [{ name: 'gasto 1', value: 200, category: 'Cartão de crédito' }],
-  percentages: [{ category: 'Cartão de crédito', percent: 100, totalSpent: 200 }]
+  percentages: [{ category: 'Cartão de crédito', percent: 100, totalSpent: 200 }],
+  total: 200
 })
 
 const mockListExpenses = (): ListExpenses => {
@@ -66,17 +67,17 @@ describe('ListExpensesController', () => {
     const res = await sut.handle(params)
     expect(res).toEqual(badRequest(new UserNotFoundError()))
   })
-  // it('Should return correct rate on LoadAccountById success', async () => {
-  //  const { sut } = makeSut()
-  //
-  //  const result = await sut.handle(mockRequest())
-  //  expect(result.body.rate).toEqual(0)
-  // })
+  it('Should return correct rate on LoadAccountById success', async () => {
+    const { sut } = makeSut()
+
+    const result = await sut.handle(mockRequest())
+    expect(result.body.rate).toBe(0)
+  })
   it('Should return 200 on ListExpenses success', async () => {
     const { sut } = makeSut()
 
     const result = await sut.handle(mockRequest())
-    expect(result).toEqual(ok(mockListExpensesReturn()))
+    expect(result).toEqual(ok({ rate: 0, ...mockListExpensesReturn() }))
   })
   it('Should return 500 if ListExpenses throws', async () => {
     const { listExpensesStub, sut } = makeSut()

@@ -17,8 +17,6 @@ export class ListExpensesController implements Controller {
       const expenses = await this.listExpenses.list({ ...data, userId: +userId })
       if (!user) return badRequest(new UserNotFoundError())
       const rateValue = user?.monthlyIncome - expenses.total
-      console.log('🚀🔴  user?.monthlyIncome:', user?.monthlyIncome)
-      console.log('🚀🔴  expenses.total:', expenses.total)
 
       return ok({ rate: rateValue, ...expenses })
     } catch (err) {
