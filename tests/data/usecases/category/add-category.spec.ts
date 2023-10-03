@@ -25,4 +25,10 @@ describe('Add Category', () => {
     await sut.add({ name: 'category', userId: 1 })
     expect(loadSpy).toHaveBeenCalledWith(1)
   })
+  it('Should return null if LoadAccountByIdRepository returns null', async () => {
+    const { sut, loadAccountByIdRepositoryStub } = makeSut()
+    jest.spyOn(loadAccountByIdRepositoryStub, 'loadById').mockReturnValueOnce(Promise.resolve(null))
+    const response = await sut.add({ name: 'category', userId: 1 })
+    expect(response).toBeNull()
+  })
 })
