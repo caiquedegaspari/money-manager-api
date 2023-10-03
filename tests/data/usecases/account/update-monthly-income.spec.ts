@@ -2,24 +2,12 @@ import { UpdateMonthlyIncome } from '@/domain/usecases/account/update-month-inco
 import { LoadAccountByIdRepository } from '@/data/protocols/db/account'
 import { DbUpdateMonthlyIncome } from '@/data/usecases/account/db-update-monthly-income'
 import { UpdateMonthlyIncomeRepository } from '@/data/protocols/db/account/update-monthly-income-repository'
+import { mockLoadAccountByIdRepository } from '../../mocks'
 
 interface SutTypes {
   sut: UpdateMonthlyIncome
   loadAccountByIdRepositoryStub: LoadAccountByIdRepository
   updateMonthlyIncomeRepositoryStub: UpdateMonthlyIncomeRepository
-}
-
-const mockLoadAccountByIdRepository = (): LoadAccountByIdRepository => {
-  class LoadAccountByIdRepositoryStub implements LoadAccountByIdRepository {
-    async loadById (id: LoadAccountByIdRepository.Params): Promise<LoadAccountByIdRepository.Result> {
-      return await Promise.resolve({
-        id: 1,
-        email: 'any_mail@mail.com',
-        monthlyIncome: 200
-      })
-    }
-  }
-  return new LoadAccountByIdRepositoryStub()
 }
 
 const mockUpdateMonthlyIncomeRepository = (): UpdateMonthlyIncomeRepository => {
